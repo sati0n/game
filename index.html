@@ -15,7 +15,7 @@
               .touch();                          // Add in touch support (for the UI)
               
       /*
-      
+
         ... Actual game code goes here ... 
       */
       // You can create a sub-class by extending the Q.Sprite class to create Q.Player
@@ -83,6 +83,73 @@ Q.Sprite.extend("Enemy",{
     });
   }
 });
+
+
+
+
+// Create a new scene called level 1
+Q.scene("level1",function(stage) {
+
+  // Add in a tile layer, and make it the collision layer
+  stage.collisionLayer(new Q.TileLayer({
+                             dataAsset: 'level.json',
+                             sheet:     'tiles' }));
+                             
+  // Create the player and add him to the stage
+  var player = stage.insert(new Q.Player());
+  
+  // Give the stage a moveable viewport and tell it
+  // to follow the player.
+  stage.add("viewport").follow(player);
+  
+  // Add in a couple of enemies
+  stage.insert(new Q.Enemy({ x: 700, y: 0 }));
+  stage.insert(new Q.Enemy({ x: 800, y: 0 }));
+  
+  // Finally add in the tower goal
+  stage.insert(new Q.Tower({ x: 180, y: 50 }));
+});
+
+// To display a game over / game won popup box, 
+// create a endGame scene that takes in a `label` option
+// to control the displayed message.
+Q.scene('endGame',function(stage) {
+  var container = stage.insert(new Q.UI.Container({
+    x: Q.width/2, y: Q.height/2, fill: "rgba(0,0,0,0.5)"
+  }));
+  
+  var button = container.insert(new Q.UI.Button({ x: 0, y: 0, fill: "#CCCCCC",
+                                                  label: "Play Again" }))         
+  var label = container.insert(new Q.UI.Text({x:10, y: -10 - button.p.h, 
+                                                   label: stage.options.label }));
+  // When the button is clicked, clear all the stages
+  // and restart the game.
+  button.on("click",function() {
+    Q.clearStages();
+    Q.stageScene('level1');
+  });
+  
+  // Expand the container to visibily fit it's contents
+  container.fit(20);
+});
+
+
+// Q.load can be called at any time to load additional assets
+// assets that are already loaded will be skipped
+Q.load("sprites.png, sprites.json, level.json, tiles.png",
+  // The callback will be triggered when everything is loaded
+  function() {
+    // Sprites sheets can be created manually
+    Q.sheet("tiles","tiles.png", { tilew: 32, tileh: 32 });
+    
+    // Or from a .json asset that defines sprite locations
+    Q.compileSheets("sprites.png","sprites.json");
+    
+    // Finally, call stageScene to run the game
+    Q.stageScene("level1");
+  });
+
+
    </script>
    </body>
 </html>
