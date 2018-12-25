@@ -1,5 +1,5 @@
 enchant(); // おまじない
-enchant.Sound.enabledInMobileSafari = true;
+
 window.onload = function() {
     var moveStageToCenter = function(core) {
  var stagePos = {
@@ -26,16 +26,22 @@ window.onload = function() {
 	game_.preload('./img/素材/1/オブジェクト1.png'); 
 	game_.preload('./img/horiko.png'); 
 	game_.preload('./img/ホコリ動きpng/ホリコ　動き　2.0.png'); 
-	game_.preload('./sound/sample.wav'); 
+    game_.preload('./img/ari.png');
+    game_.preload('./img/nasi.png');
+    game_.preload('./img/BGM.png');
     var score=0;
 
     moveStageToCenter(game_);
     
+    var audioElem;
+    
+      audioElem = new Audio();
+      audioElem.src = "./sound/sample.wav";
 
     game_.onload = function() { // ゲームの準備が整ったらメインの処理を実行します。
+
         //タイトルシーン   
         var TitleScene = function(){
-        game_.assets['./sound/sample.wav'].play();
             score=0;
             var scene = new Scene();                                            // 新しいシーンを作る
             var bg1 = new Sprite(900, 1600);            // スプライトを作る
@@ -175,28 +181,7 @@ window.onload = function() {
 			fg2.y = 0;                                 // 縦位置調整
 			scene.addChild(fg2);  
  
-            /*
-            var wall_tops=[];
-            var wall_bottoms=[];
-            var rand_h = 70;
-
-            for(var i=0;i<2;i++){
-	         	var wall_top = new Sprite(64,338);
-				var wall_bottom = new Sprite(64,338);
-				wall_top.image = game_.assets['./img/wall.png'];
-				wall_bottom.image = game_.assets['./img/wall.png'];
-				wall_top.x = 320+224*i;
-				wall_bottom.x = 320+224*i;
-				var h=Math.random()*rand_h*2-rand_h;
-				wall_top.y = -220+h;
-				wall_bottom.y = 220+h;
-				wall_tops.push(wall_top);
-				wall_bottoms.push(wall_bottom);
-
-	            scene.addChild(wall_tops[i]);
-	            scene.addChild(wall_bottoms[i]);
-			}
-            */
+           
             var ay = 1;
             var vy = 0;
             var flag = true;
@@ -296,76 +281,67 @@ window.onload = function() {
             });
             }
 
-            /*
-
-            // シーンに「毎フレーム実行イベント」を追加します。
-            scene.addEventListener(Event.ENTER_FRAME, function() {
-            	score+=1;
-            	scoreLabel.text = score.toString();
-                vy+=ay;
-                horiko.y+=vy;
-
-                bg1.x -= SCROLL_SPEED;                // 背景1をスクロール
-			    bg2.x -= SCROLL_SPEED;
-			    for(var i=0;i<2;i++ ){
-			    	wall_tops[i].x -= SCROLL_SPEED;
-			    	wall_bottoms[i].x -= SCROLL_SPEED;
-			    }               // 背景2をスクロール
-			    if (bg1.x <= -320) {                  // 背景1が画面外に出たら
-			        bg1.x = 320;                      // 画面右端に移動
-			    }
-			    if (bg2.x <= -320) {                  // 背景2が画面外に出たら
-			        bg2.x = 320;                      // 画面右端に移動
-			    }
-
-			    for(var i=0;i<2;i++){
-			 	   if (wall_tops[i].x <= -wall_tops[i].width) {                  // 背景2が画面外に出たら
-			    	    wall_tops[i].x = 400;   
-						wall_bottoms[i].x = 400;    
-						var h=Math.random()*rand_h*2-rand_h;
-						wall_tops[i].y = -220+h;
-						wall_bottoms[i].y = 220+h;
-			    	}
-
-			    	if(horiko.intersect(wall_tops[i])||horiko.intersect(wall_bottoms[i])){
-						game_.pushScene(ResultScene());
-
-			    	}	
-				}
-				if(horiko.y<0||horiko.y>320-32){
-					game_.pushScene(ResultScene());
-
-				}
-
-
-
-            });
-*/
-            // シーンに「タッチイベント」を追加します。
             scene.addEventListener(Event.TOUCH_START, function(e) {
                 if(flag){
                     vy=-15;
                     horiko.lastChild.frame=0;
                 }
-    /*
-                if (e.x > horiko.x) { // if (もしも) タッチした横位置がクマの横位置よりも右側(大きい)かったら
-                    speed = 1; // クマのスピードを1にする
-                } else { // それ以外のときは
-                    speed = -1; // クマのスピードを-1にする
-                }
-                */
+
             });
             return scene;
         };
 
-                //タイトルシーン   
-        var ResultScene = function(){
-            var scene = new Scene();                                // 新しいシーンを作る
-            scene.backgroundColor = '#ffffff';    
+        var SoundCheckScene = function(){
+            var scene = new Scene();
+            var bg1 = new Sprite(900, 1600);            // スプライトを作る
+			bg1.image = game_.assets['./img/素材/1/背景1.png']; // 画像を設定
+			bg1.x = 0;                                 // 横位置調整
+			bg1.y = 0;                                 // 縦位置調整
+			scene.addChild(bg1);  
 
-            var scoreLabel = new Label("リザルト");
-            scene.addChild(scoreLabel);    
-            scene.addEventListener(Event.TOUCH_START, function(e) {
+            
+            var waku1 = new Sprite(150, 130);            // スプライトを作る
+			waku1.image = game_.assets['./img/素材/ui/waku.png']; // 画像を設定
+			waku1.x = 200;                                 // 横位置調整
+			waku1.y = 800;                                 // 縦位置調整
+            waku1.scale(2,2);
+			scene.addChild(waku1); 
+
+            var waku2 = new Sprite(150, 130);            // スプライトを作る
+			waku2.image = game_.assets['./img/素材/ui/waku.png']; // 画像を設定
+			waku2.x = 550;                                 // 横位置調整
+			waku2.y = 800;                                 // 縦位置調整
+            waku2.scale(2,2);
+			scene.addChild(waku2); 
+
+            var bgm = new Sprite(700, 504);            // スプライトを作る
+			bgm.image = game_.assets['./img/BGM.png']; // 画像を設定
+			bgm.x = 100;                                 // 横位置調整
+			bgm.y = 300;                                 // 縦位置調整
+			scene.addChild(bgm);
+
+
+            var ari = new Sprite(768, 504);            // スプライトを作る
+			ari.image = game_.assets['./img/ari.png']; // 画像を設定
+            ari.scale(0.4,0.4);
+			ari.x = -105;                                 // 横位置調整
+			ari.y = 620;                                 // 縦位置調整
+			scene.addChild(ari);
+
+            var nasi = new Sprite(768, 504);            // スプライトを作る
+			nasi.image = game_.assets['./img/nasi.png']; // 画像を設定
+            nasi.scale(0.4,0.4);
+			nasi.x = 245;                                 // 横位置調整
+			nasi.y = 620;                                 // 縦位置調整
+			scene.addChild(nasi);  
+
+
+
+            ari.addEventListener(Event.TOUCH_START, function(e) {
+                audioElem.play();
+                game_.replaceScene(TitleScene());    // 現在表示しているシーンをゲームシーンに置き換える
+            });
+            nasi.addEventListener(Event.TOUCH_START, function(e) {
                 game_.replaceScene(TitleScene());    // 現在表示しているシーンをゲームシーンに置き換える
             });
             // タイトルシーンを返します。
@@ -373,7 +349,7 @@ window.onload = function() {
         };
 
 
-        game_.replaceScene(TitleScene());
+        game_.replaceScene(SoundCheckScene());
 
     }
     game_.start(); // ゲームをスタートさせます
