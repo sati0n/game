@@ -33,7 +33,7 @@ window.onload = function() {
     
 
     game_.onload = function() { // ゲームの準備が整ったらメインの処理を実行します。
-        game_.assets['./sound/sample.wav'];
+        game_.assets['./sound/sample.wav'].play();
         //タイトルシーン   
         var TitleScene = function(){
             score=0;
