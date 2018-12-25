@@ -24,6 +24,7 @@ window.onload = function() {
 	game_.preload('./img/素材/1/背景1.png'); 
 	game_.preload('./img/素材/1/前景1.png'); 
 	game_.preload('./img/素材/1/オブジェクト1.png'); 
+	game_.preload('./img/horiko.png'); 
 	game_.preload('./img/ホコリ動きpng/ホリコ　動き　2.0.png'); 
     var score=0;
 
@@ -107,20 +108,20 @@ window.onload = function() {
 
 
 
-            var horiko_img = new Sprite(1000, 1000);            // スプライトを作る
-			horiko_img.image = game_.assets['./img/ホコリ動きpng/ホリコ　動き　2.0.png']; // 画像を設定
+            var horiko_img = new Sprite(250, 250);            // スプライトを作る
+			horiko_img.image = game_.assets['./img/horiko.png']; // 画像を設定
                                    // 縦位置調整
-            horiko_img.scale(0.25,0.25);
+            //horiko_img.scale(0.25,0.25);
 
             var col = new Sprite(150, 150);            // スプライトを作る
-            //col.backgroundColor='#999999';                               // 縦位置調整                       // 縦位置調整
-            col.x = 425;
-            col.y =425;
+           // col.backgroundColor='#999999';                               // 縦位置調整                       // 縦位置調整
+            col.x = 50;
+            col.y = 50;
 
             var horiko = new Group();
             horiko.addChild(col);
             horiko.addChild(horiko_img)
-            horiko.x = -200;                                 // 横位置調整
+            horiko.x = 100;                                 // 横位置調整
 			horiko.y = 300;          
 			scene.addChild(horiko);   
 
@@ -209,6 +210,9 @@ window.onload = function() {
                 scoreLabel.font = "275px Mamelon";
                 scoreLabel.color ="#ff8000";
             
+            var maxWait = 4;
+            var wait = 0;
+
             scene.addEventListener(Event.ENTER_FRAME, function() {
                 if(flag){
                 vy+=ay;
@@ -225,6 +229,14 @@ window.onload = function() {
 			    if (fg2.x <= -900) {                  // 背景2が画面外に出たら
 			        fg2.x = 900;                      // 画面右端に移動
 			    }
+                if(horiko.lastChild.frame<6){
+                    wait--;
+                    if(wait<=0){
+                        wait = maxWait;
+                        horiko.lastChild.frame++;
+                    }
+                }
+
 
                 for(var i=0;i<2;i++){
                     pillars[i].x-=SCROLL_SPEED;
@@ -240,7 +252,7 @@ window.onload = function() {
 
 			    	}	
                 }
-				if(horiko.y<-450||horiko.y>1050){
+				if(horiko.y<-50||horiko.y>1400){
                     gameover();
 
 				}
@@ -330,7 +342,10 @@ window.onload = function() {
 */
             // シーンに「タッチイベント」を追加します。
             scene.addEventListener(Event.TOUCH_START, function(e) {
-                vy=-15;
+                if(flag){
+                    vy=-15;
+                    horiko.lastChild.frame=0;
+                }
     /*
                 if (e.x > horiko.x) { // if (もしも) タッチした横位置がクマの横位置よりも右側(大きい)かったら
                     speed = 1; // クマのスピードを1にする
