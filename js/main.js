@@ -1,5 +1,5 @@
 enchant(); // おまじない
-
+enchant.Sound.enabledInMobileSafari = true;
 window.onload = function() {
     var moveStageToCenter = function(core) {
  var stagePos = {
@@ -26,13 +26,14 @@ window.onload = function() {
 	game_.preload('./img/素材/1/オブジェクト1.png'); 
 	game_.preload('./img/horiko.png'); 
 	game_.preload('./img/ホコリ動きpng/ホリコ　動き　2.0.png'); 
+	game_.preload('./sound/sample.wav'); 
     var score=0;
 
     moveStageToCenter(game_);
     
 
     game_.onload = function() { // ゲームの準備が整ったらメインの処理を実行します。
-
+        game_.assets['./sound/sample.wav'];
         //タイトルシーン   
         var TitleScene = function(){
             score=0;
