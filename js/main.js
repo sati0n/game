@@ -352,7 +352,7 @@ window.onload = function() {
         game_.replaceScene(SoundCheckScene());
 
     }
-    game_.start(); // ゲームをスタートさせます
+    game_.start(); 
 
 
 
