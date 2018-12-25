@@ -2,24 +2,69 @@ enchant(); // おまじない
 
 window.onload = function() {
 
-    // 行の終わりには、;(セミコロン)をつけます。
 
-    var game_ = new Game(320, 320); // ゲーム本体を準備すると同時に、表示される領域の大きさを設定しています。
-    game_.fps = 24; // frames(フレーム) per(毎) second(秒): ゲームの進行スピードを設定しています。
-    game_.preload('./img/hiyoko.png'); // pre(前)-load(読み込み): ゲームに使う素材を予め読み込んでおきます。
-	game_.preload('./img/sky1.png'); 
-	game_.preload('./img/sky2.png'); 
-	game_.preload('./img/wall.png'); 
+    var game_ = new Game(900, 1600); // ゲーム本体を準備すると同時に、表示される領域の大きさを設定しています。
+    game_.fps = 30; // frames(フレーム) per(毎) second(秒): ゲームの進行スピードを設定しています。
+    game_.preload('./img/素材/ui/title.png'); // pre(前)-load(読み込み): ゲームに使う素材を予め読み込んでおきます。
+	game_.preload('./img/素材/ui/tap.png'); 
+    game_.preload('./img/素材/ui/tap2.png'); 
+    game_.preload('./img/素材/ui/waku.png'); 
+    game_.preload('./img/素材/ui/retry.png'); 
+	game_.preload('./img/素材/1/背景1.png'); 
+	game_.preload('./img/素材/1/前景1.png'); 
+	game_.preload('./img/素材/1/オブジェクト1.png'); 
+	game_.preload('./img/ホコリ動きpng/ホリコ　動き　2.0.png'); 
+    var score=0;
+
+    
 
     game_.onload = function() { // ゲームの準備が整ったらメインの処理を実行します。
 
         //タイトルシーン   
         var TitleScene = function(){
+            score=0;
             var scene = new Scene();                                            // 新しいシーンを作る
-            scene.backgroundColor = '#fcc800';
+            var bg1 = new Sprite(900, 1600);            // スプライトを作る
+			bg1.image = game_.assets['./img/素材/1/背景1.png']; // 画像を設定
+			bg1.x = 0;                                 // 横位置調整
+			bg1.y = 0;                                 // 縦位置調整
+			scene.addChild(bg1); 
+            
+            var pillar = new Sprite(900, 1600);            // スプライトを作る
+			pillar.image = game_.assets['./img/素材/1/オブジェクト1.png']; // 画像を設定
+			pillar.x = -130;                                 // 横位置調整
+			pillar.y = -400;                                    // 縦位置調整
+			pillar.scale(1.5,1.5);
+            scene.addChild(pillar); 
 
-            var scoreLabel = new Label("タイトル画面");
-            scene.addChild(scoreLabel);    
+            var bg2 = new Sprite(900, 1600);            // スプライトを作る
+			bg2.image = game_.assets['./img/素材/1/前景1.png']; // 画像を設定
+			bg2.x = 0;                                 // 横位置調整
+			bg2.y = 0;                                 // 縦位置調整
+			scene.addChild(bg2);  
+
+
+            var title = new Sprite(225, 195);            // スプライトを作る
+			title.image = game_.assets['./img/素材/ui/title.png']; // 画像を設定
+			title.x = 640;                                 // 横位置調整
+			title.y = 40;                                 // 縦位置調整
+			scene.addChild(title); 
+
+            var tap = new Sprite(327, 144);            // スプライトを作る
+			tap.image = game_.assets['./img/素材/ui/tap.png']; // 画像を設定
+			tap.x = 400;                                 // 横位置調整
+			tap.y = 500;                                 // 縦位置調整
+            tap.scale(1.6,1.6);
+			scene.addChild(tap); 
+
+            var horiko = new Sprite(1000, 1000);            // スプライトを作る
+			horiko.image = game_.assets['./img/ホコリ動きpng/ホリコ　動き　2.0.png']; // 画像を設定
+			horiko.x = -50;                                 // 横位置調整
+			horiko.y = 650;                                 // 縦位置調整
+            horiko.scale(0.5,0.5);
+			scene.addChild(horiko);  
+
+
             scene.addEventListener(Event.TOUCH_START, function(e) {
                 game_.replaceScene(GameScene());    // 現在表示しているシーンをゲームシーンに置き換える
             });
@@ -32,33 +77,80 @@ window.onload = function() {
             var scene = new Scene();
             
 
-            var SCROLL_SPEED = 5;
+            var SCROLL_SPEED = 10;
+            var SCROLL_DIST = 700;
 
-
-            //背景
-            var bg1 = new Sprite(320, 320);            // スプライトを作る
-			bg1.image = game_.assets['./img/sky1.png']; // 画像を設定
+            var bg1 = new Sprite(900, 1600);            // スプライトを作る
+			bg1.image = game_.assets['./img/素材/1/背景1.png']; // 画像を設定
 			bg1.x = 0;                                 // 横位置調整
 			bg1.y = 0;                                 // 縦位置調整
-			scene.addChild(bg1);   
-			
-			var bg2 = new Sprite(320, 320);            // スプライトを作る
-		    bg2.image = game_.assets['./img/sky2.png']; // 画像を設定
-		    bg2.x = 320;                               // 横位置調整 
-		    bg2.y = 0;                                 // 縦位置調整
-		    scene.addChild(bg2); 
+			scene.addChild(bg1); 
+            
 
 
-            var hiyoko = new Sprite(32, 32);  
-            hiyoko.image = game_.assets['./img/hiyoko.png']; 
 
-            hiyoko.x = 100; 
-            hiyoko.y = 120; 
 
-            //hiyoko.scale(0.1,0.1);
-            scene.addChild(hiyoko); 
-            //scene.backgroundColor  = '#7ecef4'; 
+            var horiko_img = new Sprite(1000, 1000);            // スプライトを作る
+			horiko_img.image = game_.assets['./img/ホコリ動きpng/ホリコ　動き　2.0.png']; // 画像を設定
+                                   // 縦位置調整
+            horiko_img.scale(0.25,0.25);
 
+            var col = new Sprite(150, 150);            // スプライトを作る
+            //col.backgroundColor='#999999';                               // 縦位置調整                       // 縦位置調整
+            col.x = 425;
+            col.y =425;
+
+            var horiko = new Group();
+            horiko.addChild(col);
+            horiko.addChild(horiko_img)
+            horiko.x = -200;                                 // 横位置調整
+			horiko.y = 300;          
+			scene.addChild(horiko);   
+
+            var pillars = [];
+            
+            for(var i=0;i<2;i++){
+
+                var p_a = new Sprite(900, 1600);            // スプライトを作る
+                p_a.image = game_.assets['./img/素材/1/オブジェクト1.png']; // 画像を設定
+                p_a.x = 0;                                 // 横位置調整
+                p_a.y = -700;                                    // 縦位置調整
+                p_a.scale(0.9,-0.9);
+
+                var p_b = new Sprite(900, 1600);            // スプライトを作る
+                p_b.image = game_.assets['./img/素材/1/オブジェクト1.png']; // 画像を設定
+                p_b.x = 0;                                 // 横位置調整
+                p_b.y = 700;                                    // 縦位置調整
+                p_b.scale(0.9,0.9);
+
+                var col_a = new Sprite(280,1000);
+                col_a.x = 170; 
+                col_a.y = -460; 
+                //col_a.backgroundColor='#999999';
+
+                var col_b = new Sprite(280,1000);
+                col_b.x = 170; 
+                col_b.y = 1060; 
+                //col_b.backgroundColor='#999999';
+
+                var pillar = new Group();
+                pillar.addChild(col_a);
+                pillar.addChild(p_a);
+                pillar.addChild(p_b);
+                pillar.addChild(col_b);
+                pillar.x=1000+i*SCROLL_DIST;
+                pillar.y=Math.random()*600-300;
+                pillars.push(pillar);
+                scene.addChild(pillars[i]);
+
+            } 
+            var bg2 = new Sprite(900, 1600);            // スプライトを作る
+			bg2.image = game_.assets['./img/素材/1/前景1.png']; // 画像を設定
+			bg2.x = 0;                                 // 横位置調整
+			bg2.y = 0;                                 // 縦位置調整
+			scene.addChild(bg2);  
+ 
+            /*
             var wall_tops=[];
             var wall_bottoms=[];
             var rand_h = 70;
@@ -79,22 +171,90 @@ window.onload = function() {
 	            scene.addChild(wall_tops[i]);
 	            scene.addChild(wall_bottoms[i]);
 			}
-            var ay = 0.6;
+            */
+            var ay = 1;
             var vy = 0;
+            var flag = true;
+            
+            var label = new Label("SCORE");
+                label.font = "90px Mamelon";
+                label.x=340;
+                label.y=320;
+                label.color ="#ff8000";
+            
+            var scoreLabel = new Label("000");
+                scoreLabel.font = "275px Mamelon";
+                scoreLabel.color ="#ff8000";
+            
+            scene.addEventListener(Event.ENTER_FRAME, function() {
+                if(flag){
+                vy+=ay;
+                horiko.y+=vy;
+                for(var i=0;i<2;i++){
+                    pillars[i].x-=SCROLL_SPEED;
+                    if(pillars[i].x<=-500){
+                        pillars[i].x = pillars[1-i].x+SCROLL_DIST;
+                        pillars[i].y = Math.random()*600-300;
+                        score++;
+                    }
+    		    	if(horiko.firstChild.intersect(pillars[i].firstChild)
+                    ||horiko.firstChild.intersect(pillars[i].lastChild)
+                    ){
+                        gameover();
 
+			    	}	
+                }
+				if(horiko.y<-450||horiko.y>1050){
+                    gameover();
 
-		    var score = 0;
-            var scoreLabel = new Label("");
-            scene.addChild(scoreLabel);
-  
+				}
+                }else{
 
+                }
+            });
+            function gameover(){
+                flag = false;
+
+                var waku = new Sprite(150, 130);            // スプライトを作る
+			    waku.image = game_.assets['./img/素材/ui/waku.png']; // 画像を設定
+			    waku.x = 375;                                 // 横位置調整
+			    waku.y = 450;                                 // 縦位置調整
+                waku.scale(4.5,4.5);
+			    scene.addChild(waku); 
+
+                scoreLabel.text = ""+score;
+                scoreLabel.x = (game_.width - scoreLabel._boundWidth)/2;
+                scoreLabel.y=420;
+                scene.addChild(label);  
+                scene.addChild(scoreLabel);  
+
+                var tap = new Sprite(297, 137);            // スプライトを作る
+			    tap.image = game_.assets['./img/素材/ui/tap2.png']; // 画像を設定
+			    tap.x = 300;                                 // 横位置調整
+			    tap.y = 1000;                                 // 縦位置調整
+                tap.scale(1.3,1.3);
+			    scene.addChild(tap); 
+
+                var retry = new Sprite(190, 190);            // スプライトを作る
+			    retry.image = game_.assets['./img/素材/ui/retry.png']; // 画像を設定
+			    retry.x = 355;                                 // 横位置調整
+			    retry.y = 1200;                                 // 縦位置調整
+                retry.scale(1,1);
+			    scene.addChild(retry); 
+
+                retry.addEventListener(Event.TOUCH_START, function(e) {
+                game_.replaceScene(TitleScene());    // 現在表示しているシーンをゲームシーンに置き換える
+            });
+            }
+
+            /*
 
             // シーンに「毎フレーム実行イベント」を追加します。
             scene.addEventListener(Event.ENTER_FRAME, function() {
             	score+=1;
             	scoreLabel.text = score.toString();
                 vy+=ay;
-                hiyoko.y+=vy;
+                horiko.y+=vy;
 
                 bg1.x -= SCROLL_SPEED;                // 背景1をスクロール
 			    bg2.x -= SCROLL_SPEED;
@@ -118,12 +278,12 @@ window.onload = function() {
 						wall_bottoms[i].y = 220+h;
 			    	}
 
-			    	if(hiyoko.intersect(wall_tops[i])||hiyoko.intersect(wall_bottoms[i])){
+			    	if(horiko.intersect(wall_tops[i])||horiko.intersect(wall_bottoms[i])){
 						game_.pushScene(ResultScene());
 
 			    	}	
 				}
-				if(hiyoko.y<0||hiyoko.y>320-32){
+				if(horiko.y<0||horiko.y>320-32){
 					game_.pushScene(ResultScene());
 
 				}
@@ -131,12 +291,12 @@ window.onload = function() {
 
 
             });
-
+*/
             // シーンに「タッチイベント」を追加します。
             scene.addEventListener(Event.TOUCH_START, function(e) {
-                vy=-8;
+                vy=-15;
     /*
-                if (e.x > hiyoko.x) { // if (もしも) タッチした横位置がクマの横位置よりも右側(大きい)かったら
+                if (e.x > horiko.x) { // if (もしも) タッチした横位置がクマの横位置よりも右側(大きい)かったら
                     speed = 1; // クマのスピードを1にする
                 } else { // それ以外のときは
                     speed = -1; // クマのスピードを-1にする
