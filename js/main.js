@@ -1,7 +1,18 @@
 enchant(); // おまじない
 
 window.onload = function() {
-
+    var moveStageToCenter = function(core) {
+ var stagePos = {
+  top: (window.innerHeight - (core.height * core.scale)) / 2,
+  left: (window.innerWidth - (core.width * core.scale)) / 2,
+ };
+ var stage = document.getElementById('enchant-stage');
+ stage.style.position = 'absolute';
+ stage.style.top = stagePos.top + 'px';
+ stage.style.left = stagePos.left + 'px';
+ core._pageX = stagePos.left;
+ core._pageY = stagePos.top;
+};
 
     var game_ = new Game(900, 1600); // ゲーム本体を準備すると同時に、表示される領域の大きさを設定しています。
     game_.fps = 30; // frames(フレーム) per(毎) second(秒): ゲームの進行スピードを設定しています。
@@ -16,6 +27,7 @@ window.onload = function() {
 	game_.preload('./img/ホコリ動きpng/ホリコ　動き　2.0.png'); 
     var score=0;
 
+    moveStageToCenter(game_);
     
 
     game_.onload = function() { // ゲームの準備が整ったらメインの処理を実行します。
