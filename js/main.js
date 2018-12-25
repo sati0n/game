@@ -86,7 +86,12 @@ window.onload = function() {
 			bg1.y = 0;                                 // 縦位置調整
 			scene.addChild(bg1); 
             
-
+            var back_pillar = new Sprite(900, 1600);            // スプライトを作る
+			back_pillar.image = game_.assets['./img/素材/1/オブジェクト1.png']; // 画像を設定
+			back_pillar.x = 1000;                                 // 横位置調整
+			back_pillar.y = 650;                                    // 縦位置調整
+			back_pillar.scale(0.2,0.2);
+            scene.addChild(back_pillar); 
 
 
 
@@ -144,11 +149,17 @@ window.onload = function() {
                 scene.addChild(pillars[i]);
 
             } 
-            var bg2 = new Sprite(900, 1600);            // スプライトを作る
-			bg2.image = game_.assets['./img/素材/1/前景1.png']; // 画像を設定
-			bg2.x = 0;                                 // 横位置調整
-			bg2.y = 0;                                 // 縦位置調整
-			scene.addChild(bg2);  
+            var fg1 = new Sprite(900, 1600);            // スプライトを作る
+			fg1.image = game_.assets['./img/素材/1/前景1.png']; // 画像を設定
+			fg1.x = 0;                                 // 横位置調整
+			fg1.y = 0;                                 // 縦位置調整
+			scene.addChild(fg1);  
+
+            var fg2 = new Sprite(900, 1600);            // スプライトを作る
+			fg2.image = game_.assets['./img/素材/1/前景1.png']; // 画像を設定
+			fg2.x = 900;                                 // 横位置調整
+			fg2.y = 0;                                 // 縦位置調整
+			scene.addChild(fg2);  
  
             /*
             var wall_tops=[];
@@ -190,6 +201,19 @@ window.onload = function() {
                 if(flag){
                 vy+=ay;
                 horiko.y+=vy;
+                back_pillar.x-=SCROLL_SPEED/3;
+                if(back_pillar.x<-500){
+                    back_pillar.x = 1000;
+                }
+                fg1.x-=SCROLL_SPEED;
+                fg2.x-=SCROLL_SPEED;
+                if (fg1.x <= -900) {                  // 背景1が画面外に出たら
+			        fg1.x = 900;                      // 画面右端に移動
+			    }
+			    if (fg2.x <= -900) {                  // 背景2が画面外に出たら
+			        fg2.x = 900;                      // 画面右端に移動
+			    }
+
                 for(var i=0;i<2;i++){
                     pillars[i].x-=SCROLL_SPEED;
                     if(pillars[i].x<=-500){
@@ -224,7 +248,7 @@ window.onload = function() {
 
                 scoreLabel.text = ""+score;
                 scoreLabel.x = (game_.width - scoreLabel._boundWidth)/2;
-                scoreLabel.y=420;
+                scoreLabel.y=440;
                 scene.addChild(label);  
                 scene.addChild(scoreLabel);  
 
