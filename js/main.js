@@ -35,8 +35,8 @@ window.onload = function() {
     
     var audioElem;
     
-      audioElem = new Audio();
-      audioElem.src = "./sound/sample.wav";
+    audioElem = new Audio();
+    audioElem.src = "./sound/sample.wav";
 
     game_.onload = function() { // ゲームの準備が整ったらメインの処理を実行します。
 
@@ -337,7 +337,7 @@ window.onload = function() {
 
 
 
-            ari.addEventListener(Event.TOUCH_START, function(e) {
+            ari.addEventListener(Event.TOUCH_END, function(e) {
                 audioElem.play();
                 game_.replaceScene(TitleScene());    // 現在表示しているシーンをゲームシーンに置き換える
             });
