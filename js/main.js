@@ -33,9 +33,9 @@ window.onload = function() {
     
 
     game_.onload = function() { // ゲームの準備が整ったらメインの処理を実行します。
-        game_.assets['./sound/sample.wav'].play();
         //タイトルシーン   
         var TitleScene = function(){
+        game_.assets['./sound/sample.wav'].play();
             score=0;
             var scene = new Scene();                                            // 新しいシーンを作る
             var bg1 = new Sprite(900, 1600);            // スプライトを作る
