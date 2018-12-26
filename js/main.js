@@ -14,8 +14,14 @@ window.onload = function() {
         core._pageY = stagePos.top;
     };
 
+    function removeScene(scene){
+        while(scene.firstChild){
+            scene.removeChild(scene.firstChild);
+        }
+    }
+
     var game_ = new Game(900, 1600); 
-    game_.fps = 30; 
+    game_.fps = 24; 
     game_.preload('./img/素材/ui/title.png'); 
 	game_.preload('./img/素材/ui/tap.png'); 
     game_.preload('./img/素材/ui/tap2.png'); 
@@ -86,6 +92,7 @@ window.onload = function() {
 
 
             scene.addEventListener(Event.TOUCH_START, function(e) {
+                removeScene(scene);
                 game_.replaceScene(GameScene());   
             });
             
@@ -97,7 +104,7 @@ window.onload = function() {
             var scene = new Scene();
             
 
-            var SCROLL_SPEED = 10;
+            var SCROLL_SPEED = 15;
             var SCROLL_DIST = 700;
 
             var bg1 = new Sprite(900, 1600);            
@@ -179,7 +186,7 @@ window.onload = function() {
 			scene.addChild(fg2);  
  
            
-            var ay = 1;
+            var ay = 1.5;
             var vy = 0;
             var flag = true;
             
@@ -239,8 +246,6 @@ window.onload = function() {
                     gameover();
 
 				}
-                }else{
-
                 }
             });
             function gameover(){
@@ -274,13 +279,14 @@ window.onload = function() {
 			    scene.addChild(retry); 
 
                 retry.addEventListener(Event.TOUCH_START, function(e) {
+                removeScene(scene);
                 game_.replaceScene(TitleScene());   
             });
             }
 
             scene.addEventListener(Event.TOUCH_START, function(e) {
                 if(flag){
-                    vy=-15;
+                    vy=-20;
                     horiko.lastChild.frame=0;
                 }
 
@@ -336,9 +342,11 @@ window.onload = function() {
 
             ari.addEventListener(Event.TOUCH_END, function(e) {
                 audioElem.play();
+                removeScene(scene);
                 game_.replaceScene(TitleScene());    
             });
             nasi.addEventListener(Event.TOUCH_START, function(e) {
+                removeScene(scene);
                 game_.replaceScene(TitleScene());    
             });
             return scene;
