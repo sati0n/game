@@ -38,10 +38,14 @@ window.onload = function() {
 
     moveStageToCenter(game_);
     
-    var audioElem;
-    audioElem = new Audio();
-    audioElem.src = "./sound/sample.wav";
-    audioElem.loop = true;
+    var audio_intro;
+    audio_intro = new Audio();
+    audio_intro.src = "./sound/horiko_stage1_bgm_intro.wav";
+    audio_intro.loop = false;
+    var audio_loop;
+    audio_loop = new Audio();
+    audio_loop.src = "./sound/horiko_stage1_bgm_loop.wav";
+    audio_loop.loop = true;
 
     game_.onload = function() { 
 
@@ -98,6 +102,13 @@ window.onload = function() {
                 game_.replaceScene(GameScene());   
             });
             
+            scene.addEventListener(Event.ENTER_FRAME, function() {
+                    
+                if(audio_intro.ended){
+                    audio_loop.play();
+                }
+            });
+
             return scene;
         };
 
@@ -106,7 +117,7 @@ window.onload = function() {
             var scene = new Scene();
             
 
-            var SCROLL_SPEED = 15;
+            var SCROLL_SPEED = 12;
             var SCROLL_DIST = 700;
 
             var bg1 = new Sprite(900, 1600);            
@@ -207,6 +218,10 @@ window.onload = function() {
 
             scene.addEventListener(Event.ENTER_FRAME, function() {
                 if(flag){
+                    
+                if(audio_intro.ended){
+                    audio_loop.play();
+                }
                 vy+=ay;
                 horiko.y+=vy;
                 back_pillar.x-=SCROLL_SPEED/3;
@@ -248,11 +263,15 @@ window.onload = function() {
                     gameover();
 
 				}
+                
+
+
                 }
             });
             function gameover(){
                 flag = false;
-                audioElem.pause();
+                audio_intro.pause();
+                audio_loop.pause();
                 var waku = new Sprite(150, 130);      
 			    waku.image = game_.assets['./img/stage/ui/waku.png']; 
 			    waku.x = 375;                                 
@@ -282,8 +301,9 @@ window.onload = function() {
 
                 retry.addEventListener(Event.TOUCH_START, function(e) {
                 removeScene(scene);
-                audioElem.currentTime =0 ;
-                audioElem.play();
+                audio_intro.currentTime =0 ;
+                audio_loop.currentTime =0 ;
+                audio_intro.play();
                 game_.replaceScene(TitleScene());   
             });
             }
@@ -345,12 +365,12 @@ window.onload = function() {
 
 
             ari.addEventListener(Event.TOUCH_END, function(e) {
-                audioElem.play();
+                audio_intro.play();
                 removeScene(scene);
                 game_.replaceScene(TitleScene());    
             });
             nasi.addEventListener(Event.TOUCH_START, function(e) {
-                audioElem.muted =true;
+                audio_intro.muted =true;
                 removeScene(scene);
                 game_.replaceScene(TitleScene());    
             });
